@@ -30,41 +30,7 @@ install_pisound() {
 	echo "$FUNCNAME started"
 	echo
 	cd $MODEP_SRC_DIR
-	set -e
-	if [ ! -d "pisound" ]; then
-		echo "Cloning pisound repository from https://github.com/BlokasLabs/pisound..."
-		git clone https://github.com/BlokasLabs/pisound.git
-		cd pisound
-	else
-		echo "Updating pisound repository with latest stuff in https://github.com/BlokasLabs/pisound..."
-		cd pisound
-		git pull
-	fi
-	echo
-	chmod +x enable-pisound.sh
-	chmod +x disable-pisound.sh
-	cd pisound-btn
-	make
-	sudo make install
-	sudo ../enable-pisound.sh
-	set +e
-	PISOUND_OVERLAY_LOADED=`find /proc/device-tree/ 2> /dev/null | grep pisound | head -1`
-	if [ -z $PISOUND_OVERLAY_LOADED ]; then
-		echo "Loading pisound overlays dynamically!"
-		sudo dtoverlay pisound
-		sudo dtoverlay i2s-mmap
-	else
-		echo "pisound overlay is already loaded!"
-	fi
-	echo "setting pisound as the default audio device"
-	if grep -q 'pcm.!default' ~/.asoundrc; then
-		sed -i '/pcm.!default\|ctl.!default/,/}/ { s/type .*/type hw/g; s/card .*/card 1/g; }' ~/.asoundrc
-	else
-		printf 'pcm.!default {\n\ttype hw\n\tcard 1\n}\n\nctl.!default {\n\ttype hw\n\tcard 1\n}\n' >> ~/.asoundrc
-	fi
-	for btn in `ps -C btn --no-headers | awk '{print $1;}'`; do
-		kill $btn > /dev/null
-	done
+        curl https://blokas.io/pisound/install-pisound.sh | sh
 	if [ -z "$1" ]; then
 		echo
 		read -n 1 -p "Press any key to continue.."
@@ -323,7 +289,6 @@ install_all() {
 	install_jack -s
 	install_lilv -s 
 	install_hotspot -s
-	install_touchosc -s
 	install_modhost -s
 	install_modui -s
 	install_phantomjs -s
