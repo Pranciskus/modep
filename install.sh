@@ -41,5 +41,4 @@ if ! grep -q 'alias modep="/usr/local/modep/modep.sh"' $HOME/.bashrc; then
 	echo 'alias modep="/usr/local/modep/modep.sh"' >> $HOME/.bashrc
 	source $HOME/.bashrc
 fi
-sudo systemctl daemon-reload
 $MODEP/modep.sh
