@@ -23,7 +23,7 @@ sudo apt-get install -y git
 cd $HOME
 if [ ! -d "modep" ]; then
 	echo "Cloning modep repository..."
-	git clone https://github.com/BlokasLabs/modep.git
+	git clone https://github.com/Pranciskus/modep.git
 else
 	echo "Updating modep repository..."
 	cd modep
